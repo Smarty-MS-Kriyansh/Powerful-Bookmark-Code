@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Bookmark Code</title>
+<style>
+  :root{
+    --bg-orange: #ff7a00;
+    --panel-dark: #0b0b0b;
+    --accent-pink: #ff4da6;
+    --neon: #00fff0;
+    --code-glow: rgba(0,255,240,0.18);
+    --box-border: #ffcf5c;
+  }
+
+  html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;}
+  body{
+    background: linear-gradient(180deg,#fff7ed 0%, #ffe9d0 40%, #fff 100%);
+    display:flex;align-items:center;justify-content:center;padding:30px;
+  }
+
+  /* outer framed container */
+  .outer {
+    width:100%;
+    max-width:980px;
+    border-radius:14px;
+    padding:20px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.75));
+    box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+    border: 6px solid rgba(0,0,0,0.05);
+    position:relative;
+    overflow:hidden;
+  }
+
+  /* top header BOOKMARK CODE */
+  .header {
+    display:flex;align-items:center;justify-content:space-between;
+    gap:12px;margin-bottom:16px;
+  }
+  .title {
+    background: linear-gradient(90deg,#ff4da6,#ff72c9);
+    color:#fff;padding:10px 18px;border-radius:10px;font-weight:700;
+    box-shadow: 0 8px 24px rgba(255,77,166,0.25), 0 1px 0 rgba(255,255,255,0.08) inset;
+    font-size:18px;
+  }
+  .madeby {
+    color:#111;font-weight:700;background:transparent;padding:8px 10px;border-radius:8px;
+  }
+
+  /* top-right COPY CODE (red shining) */
+  .top-copy {
+    position:absolute; right:22px; top:22px;
+    background:linear-gradient(90deg,#ff3b3b,#ff7b3b);
+    color:#fff;padding:10px 14px;border-radius:10px;font-weight:800;cursor:pointer;
+    box-shadow:0 6px 18px rgba(255,59,59,0.28), 0 0 30px rgba(255,123,59,0.15);
+    transform:translateZ(0); z-index:40;
+    border:2px solid rgba(255,255,255,0.08);
+    text-transform:uppercase;
+    letter-spacing:0.8px;
+  }
+  .top-copy::after{
+    content:"";
+    position:absolute;left:-30%;top:-50%;
+    width:160%;height:160%;
+    background: radial-gradient(circle at 20% 20%, rgba(255,255,255,0.15), transparent 15%),
+                radial-gradient(circle at 80% 80%, rgba(255,255,255,0.06), transparent 10%);
+    mix-blend-mode:overlay; border-radius:10px; pointer-events:none;
+  }
+
+  /* code panel */
+  .code-panel {
+    border-radius:12px; padding:18px;
+    background: linear-gradient(180deg, var(--bg-orange), #ff8f3a);
+    box-shadow: 0 12px 40px rgba(255,122,0,0.12), 0 2px 0 rgba(255,255,255,0.04) inset;
+    border: 3px solid var(--box-border);
+    display:flex; flex-direction:column; gap:12px;
+    position:relative; z-index:10;
+  }
+
+  .code-inner {
+    background: linear-gradient(180deg, #071017 0%, #071017 100%);
+    border-radius:8px; padding:14px; overflow:auto; max-height:520px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.5), 0 0 40px var(--code-glow);
+    border: 2px solid rgba(255,255,255,0.03);
+  }
+
+  pre.code {
+    margin:0; font-family: "Source Code Pro", ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+    font-size:12.8px; line-height:1.45; color:var(--neon);
+    text-shadow: 0 0 6px rgba(0,255,240,0.22), 0 1px 0 rgba(0,0,0,0.5);
+    white-space:pre-wrap; word-wrap:break-word;
+  }
+
+  /* footer copy button center-bottom green animated */
+  .bottom-area {
+    display:flex; align-items:center; justify-content:center; gap:12px; margin-top:10px;
+  }
+  .copy-btn {
+    background: linear-gradient(90deg,#39d353,#12c04a);
+    padding:12px 22px;border-radius:12px;color:#032a12;font-weight:900;
+    border:0;cursor:pointer;text-transform:uppercase;letter-spacing:1px;
+    box-shadow: 0 10px 30px rgba(18,192,74,0.22), 0 0 40px rgba(18,192,74,0.12);
+    position:relative; overflow:hidden;
+  }
+  .copy-btn span{position:relative; z-index:3;}
+  /* animated shine */
+  .copy-btn::before{
+    content:""; position:absolute; left:-40%; top:0; width:40%; height:100%;
+    transform:skewX(-20deg); background:linear-gradient(90deg, rgba(255,255,255,0.22), rgba(255,255,255,0));
+    animation: slideShine 2.6s linear infinite;
+    opacity:0.5; z-index:2;
+  }
+  @keyframes slideShine{
+    0%{left:-40%}
+    50%{left:120%}
+    100%{left:120%}
+  }
+
+  /* framed outer border around whole code area */
+  .big-frame {
+    border:4px solid rgba(0,0,0,0.12);
+    padding:8px; border-radius:14px; background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0));
+  }
+
+  .footer-note{
+    margin-top:10px;text-align:center;color:#111;font-weight:700;
+  }
+
+  /* login overlay */
+  .overlay {
+    position:fixed; left:0;top:0;right:0;bottom:0; display:flex;align-items:center;justify-content:center;
+    background:rgba(0,0,0,0.6); z-index:90;
+  }
+  .login-card{
+    background:linear-gradient(180deg,#111316,#0f1620); color:#fff; padding:28px; border-radius:12px;
+    width:90%; max-width:420px; box-shadow:0 30px 80px rgba(0,0,0,0.6); border:2px solid rgba(255,255,255,0.03);
+    text-align:left;
+  }
+  .login-card h2{ margin:0 0 14px 0; text-align:center; font-size:20px; letter-spacing:0.6px;}
+  .field{display:flex; flex-direction:column; gap:6px; margin-bottom:12px;}
+  .field input{padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.06); background:#0b0f12;color:#fff;}
+  .field input::placeholder{color:rgba(255,255,255,0.45);}
+  .getcode { background: linear-gradient(90deg,#ffb238,#ff7a00); color:#111;border:0;padding:10px 14px;border-radius:8px;font-weight:700;cursor:pointer; width:100%; }
+  .small-note{font-size:12px;color:rgba(255,255,255,0.6); margin-top:8px; text-align:center;}
+
+  /* modal popup */
+  .modal {
+    position:fixed; left:50%; top:50%; transform:translate(-50%,-50%) scale(1); z-index:200;
+    min-width:260px; max-width:90%; background:#081018; color:#fff; padding:18px;border-radius:10px;
+    box-shadow:0 30px 80px rgba(0,0,0,0.6); border:2px solid rgba(255,255,255,0.03);
+    display:none; text-align:center;
+  }
+  .modal.show{display:block;}
+  .modal p{margin:12px 0 16px 0;}
+  .modal button{background:#12c04a;color:#042014;border:none;padding:8px 12px;border-radius:8px;font-weight:700; cursor:pointer;}
+  .modal .okgray{background:#444;color:#fff;}
+
+  /* responsive */
+  @media (max-width:640px){
+    .top-copy{right:12px; top:12px; padding:8px 10px; font-size:12px;}
+    .title{font-size:16px;padding:8px 12px;}
+    .copy-btn{padding:10px 16px;}
+    .code-inner{max-height:360px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="outer big-frame" id="mainContainer">
+
+  <div class="header">
+    <div class="title">BOOKMARK CODE</div>
+    <div class="madeby">Made By: Smarty MS🙃</div>
+  </div>
+
+  <div class="code-panel">
+    <!-- top-right copy -->
+    <div class="top-copy" id="topCopyBtn">COPY CODE</div>
+
+    <!-- code block -->
+    <div class="code-inner" aria-hidden="false">
+      <pre class="code" id="codeDisplay" tabindex="0"></pre>
+    </div>
+
+    <!-- bottom copy center -->
+    <div class="bottom-area">
+      <button class="copy-btn" id="centerCopyBtn"><span>COPY CODE</span></button>
+    </div>
+
+    <div class="footer-note">Play safe — copy the bookmarklet and paste in browser address bar if needed.</div>
+  </div>
+
+</div>
+
+<!-- login overlay -->
+<div class="overlay" id="loginOverlay">
+  <div class="login-card">
+    <h2>LOGIN TO GET CODE</h2>
+    <div class="field">
+      <label style="color:#fff;font-size:13px;">Username:</label>
+      <input id="username" placeholder="Enter Your Username.">
+    </div>
+    <div class="field">
+      <label style="color:#fff;font-size:13px;">Password:</label>
+      <input id="password" placeholder="Enter Your Password." type="password">
+    </div>
+    <button class="getcode" id="getCodeBtn">GET CODE</button>
+    <div class="small-note">Use <strong>BROTHER</strong> and <strong>VIP</strong> (all capitals) to unlock the code.</div>
+  </div>
+</div>
+
+<!-- modal -->
+<div class="modal" id="modal">
+  <p id="modalText">Modal text</p>
+  <div style="display:flex;gap:10px;justify-content:center;">
+    <button id="modalOk">Ok Bro</button>
+    <button id="modalAlt" class="okgray" style="display:none;">Close</button>
+  </div>
+</div>
+
+<!-- raw code holder (type text/plain to avoid interpretation) -->
+<script id="rawCode" type="text/plain">
+javascript:(function(){
+try{
+  const exts=['.m3u8','.mpd','.mp4','.ts','blob:'];
+  let urls=[];
+  function showUI(link){
+    let box=document.createElement('div');
+    Object.assign(box.style,{
+      position:'fixed',bottom:'20px',left:'20px',zIndex:999999,
+      background:'#111',color:'#fff',padding:'10px 15px',
+      borderRadius:'10px',fontFamily:'monospace',fontSize:'13px',
+      boxShadow:'0 0 10px #000',maxWidth:'90%',wordWrap:'break-word'
+    });
+    box.innerHTML=<div style="margin-bottom:5px;">🎯 <b>Captured:</b> ${link}</div>
+    <button id="copyBtn" style="background:orange;color:#000;border:none;padding:6px 10px;margin-right:5px;border-radius:5px;cursor:pointer;">Copy</button>
+    <button id="openBtn" style="background:#2196F3;color:#fff;border:none;padding:6px 10px;border-radius:5px;cursor:pointer;">Open</button>;
+    document.body.appendChild(box);
+    box.querySelector('#copyBtn').onclick=()=>{navigator.clipboard.writeText(link);box.querySelector('#copyBtn').innerText='✅ Copied!';};
+    box.querySelector('#openBtn').onclick=()=>{window.open(link,'_blank');};
+  }
+  function detect(url){
+    if(urls.includes(url)) return;
+    urls.push(url);
+    console.log('🎯 Found stream:',url);
+    showUI(url);
+  }
+  new PerformanceObserver((list)=>{
+    list.getEntries().forEach(e=>{
+      exts.forEach(x=>{
+        if(e.name.includes(x)) detect(e.name);
+      });
+    });
+  }).observe({entryTypes:['resource']});
+  const xhrOpen=XMLHttpRequest.prototype.open;
+  XMLHttpRequest.prototype.open=function(_,url){exts.forEach(x=>{if(url&&url.includes(x))detect(url);});return xhrOpen.apply(this,arguments);};
+  const fetchOrig=window.fetch;
+  window.fetch=function(){
+    try{let u=arguments[0];if(typeof u==='string')exts.forEach(x=>{if(u.includes(x))detect(u);});}catch(e){}
+    return fetchOrig.apply(this,arguments);
+  };
+  alert('⚡ Live Stream Detector Started!\nPlay your lecture/video and links will appear automatically.');
+}catch(err){alert('❌ Error: '+err.message);}
+})();
+</script>
+
+<script>
+(function(){
+  // Grab the raw code text exactly as user provided
+  const rawEl = document.getElementById('rawCode');
+  let codeText = rawEl.textContent.trim();
+
+  // put code into visible <pre> safely
+  const codeDisplay = document.getElementById('codeDisplay');
+  // show with proper HTML-escaped content
+  function escapeHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  codeDisplay.innerHTML = escapeHtml(codeText);
+
+  // elements
+  const overlay = document.getElementById('loginOverlay');
+  const username = document.getElementById('username');
+  const password = document.getElementById('password');
+  const getCodeBtn = document.getElementById('getCodeBtn');
+  const modal = document.getElementById('modal');
+  const modalText = document.getElementById('modalText');
+  const modalOk = document.getElementById('modalOk');
+  const modalAlt = document.getElementById('modalAlt');
+  const topCopyBtn = document.getElementById('topCopyBtn');
+  const centerCopyBtn = document.getElementById('centerCopyBtn');
+  const mainContainer = document.getElementById('mainContainer');
+
+  // show modal helper
+  function showModal(text, altVisible){
+    modalText.textContent = text;
+    modal.classList.add('show');
+    modalOk.style.display = '';
+    modalAlt.style.display = altVisible ? '' : 'none';
+  }
+  function closeModal(){ modal.classList.remove('show'); }
+
+  modalOk.addEventListener('click', function(){
+    closeModal();
+  });
+  modalAlt.addEventListener('click', function(){ closeModal(); });
+
+  // login validation
+  getCodeBtn.addEventListener('click', function(){
+    const u = (username.value||'').trim();
+    const p = (password.value||'').trim();
+
+    if(!u && !p){
+      showModal("Please Enter First Username & Password.🤡", false);
+      return;
+    }
+    // username must be BROTHER in all caps
+    if(u !== 'BROTHER'){
+      showModal("Please Enter Right Username (Must be All Letters in Capital.😇)", false);
+      return;
+    }
+    // password must be VIP
+    if(p !== 'VIP'){
+      showModal("Please Enter a Genuine Password (Must be All Letters in Capital.🤗)", false);
+      return;
+    }
+
+    // correct -> hide overlay
+    overlay.style.display = 'none';
+    showModal("Welcome! Code unlocked. You can COPY CODE now.", false);
+  });
+
+  // copy behavior
+  function doCopy(){
+    navigator.clipboard.writeText(codeText).then(()=>{
+      // show success popup with Ok Bro
+      showModal("Your Code is Copied Successfully✅🥳", false);
+    }).catch(()=>{
+      // fallback: select & execCommand
+      const ta = document.createElement('textarea');
+      ta.value = codeText; document.body.appendChild(ta);
+      ta.select(); try{ document.execCommand('copy'); showModal("Your Code is Copied Successfully✅🥳", false);}catch(e){ showModal("Copy failed. Please select and copy manually.", false);} finally{ ta.remove(); }
+    });
+  }
+
+  topCopyBtn.addEventListener('click', function(){ doCopy(); });
+  centerCopyBtn.addEventListener('click', function(){ doCopy(); });
+
+  // Make the code block selectable & focusable
+  codeDisplay.addEventListener('dblclick', function(){
+    // on double click, select all
+    const range = document.createRange();
+    range.selectNodeContents(codeDisplay);
+    const sel = window.getSelection();
+    sel.removeAllRanges(); sel.addRange(range);
+  });
+
+  // Accessibility: allow Enter key in login fields to submit
+  [username,password].forEach(el=>{
+    el.addEventListener('keydown', function(e){
+      if(e.key === 'Enter') getCodeBtn.click();
+    });
+  });
+
+  // initial focus
+  username.focus();
+
+  // ensure copy buttons indicate copied text briefly
+  function tempCopyFeedback(btn){
+    const old = btn.innerHTML;
+    btn.innerHTML = "✅ Copied!";
+    setTimeout(()=>btn.innerHTML = old, 2500);
+  }
+
+  // Add visual feedback after modal COPY success
+  modalOk.addEventListener('click', function(){
+    // nothing extra: modal closes and returns to main.
+  });
+
+  // Also make the top-right copy button visually respond on click
+  topCopyBtn.addEventListener('click', function(){
+    tempCopyFeedback(topCopyBtn);
+  });
+  centerCopyBtn.addEventListener('click', function(){
+    tempCopyFeedback(centerCopyBtn);
+  });
+
+  // Make outer container keyboard friendly: Esc closes modal
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape'){ closeModal(); }
+  });
+
+})();
+</script>
+</body>
+</html>
