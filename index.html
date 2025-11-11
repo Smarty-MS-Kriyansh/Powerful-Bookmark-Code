@@ -233,9 +233,11 @@ try{
       borderRadius:'10px',fontFamily:'monospace',fontSize:'13px',
       boxShadow:'0 0 10px #000',maxWidth:'90%',wordWrap:'break-word'
     });
-    box.innerHTML=<div style="margin-bottom:5px;">🎯 <b>Captured:</b> ${link}</div>
-    <button id="copyBtn" style="background:orange;color:#000;border:none;padding:6px 10px;margin-right:5px;border-radius:5px;cursor:pointer;">Copy</button>
-    <button id="openBtn" style="background:#2196F3;color:#fff;border:none;padding:6px 10px;border-radius:5px;cursor:pointer;">Open</button>;
+    box.innerHTML = `
+      <div style="margin-bottom:5px;">🎯 <b>Captured:</b> ${link}</div>
+      <button id="copyBtn" style="background:orange;color:#000;border:none;padding:6px 10px;margin-right:5px;border-radius:5px;cursor:pointer;">Copy</button>
+      <button id="openBtn" style="background:#2196F3;color:#fff;border:none;padding:6px 10px;border-radius:5px;cursor:pointer;">Open</button>
+    `;
     document.body.appendChild(box);
     box.querySelector('#copyBtn').onclick=()=>{navigator.clipboard.writeText(link);box.querySelector('#copyBtn').innerText='✅ Copied!';};
     box.querySelector('#openBtn').onclick=()=>{window.open(link,'_blank');};
